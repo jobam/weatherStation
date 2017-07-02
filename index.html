@@ -1,25 +1,138 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>WeatherStation</title>
-    </head>
- 
-    <body>
-        <h1>WeatherStation</h1>
 
-<h2>Tempreture</h2>
-<div id="tempretureValue">20</div><span>°C</span>
+<head>
+    <meta charset="utf-8" />
+    <title>WeatherStation</title>
 
-        <script src="/libraries/socket.io.js"></script>
-        <script src="/libraries/jquery-3.2.1.min.js"></script>
-        <script>
-            var socket = io.connect('http://localhost:8080');
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
 
-            socket.on("tempreture", function(value){
-                console.log("new tempreture recieved !");
-                $("#tempretureValue").text(value);
-            })
-        </script>
-    </body>
+    <script src="/libraries/socket.io.js"></script>
+    <script src="/libraries/jquery-3.2.1.min.js"></script>
+
+    <script src="/css/hightcharts.js"></script>
+</head>
+
+<body>
+
+    <div style="width: 600px; height: 400px; margin: 0 auto">
+        <div id="container-speed" style="width: 300px; height: 200px; float: left"></div>
+        <div id="container-rpm" style="width: 300px; height: 200px; float: left"></div>
+    </div>
+
+
+
+
+    <!--========================HightCharts===============================-->
+    <script type="text/javascript">
+        // Apply the theme
+        Highcharts.setOptions(Highcharts.theme);
+
+        var gaugeOptions = {
+
+            chart: {
+                type: 'solidgauge'
+            },
+
+            title: null,
+
+            pane: {
+                center: ['50%', '85%'],
+                size: '140%',
+                startAngle: -90,
+                endAngle: 90,
+                background: {
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                    innerRadius: '60%',
+                    outerRadius: '100%',
+                    shape: 'arc'
+                }
+            },
+
+            tooltip: {
+                enabled: false
+            },
+
+            // the value axis
+            yAxis: {
+                stops: [
+                    [0.1, '#55BF3B'], // green
+                    [0.5, '#DDDF0D'], // yellow
+                    [0.9, '#DF5353'] // red
+                ],
+                lineWidth: 0,
+                minorTickInterval: null,
+                tickAmount: 2,
+                title: {
+                    y: -70
+                },
+                labels: {
+                    y: 16
+                }
+            },
+
+            plotOptions: {
+                solidgauge: {
+                    dataLabels: {
+                        y: 5,
+                        borderWidth: 0,
+                        useHTML: true
+                    }
+                }
+            }
+        };
+
+        // The speed gauge
+        var chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
+            yAxis: {
+                min: -10,
+                max: 50,
+                title: {
+                    text: 'Tempreture'
+                }
+            },
+
+            credits: {
+                enabled: false
+            },
+
+            series: [{
+                name: 'Speed',
+                data: [40],
+                dataLabels: {
+                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                    '<span style="font-size:12px;color:silver">°C</span></div>'
+                },
+                tooltip: {
+                    valueSuffix: ' °C'
+                }
+            }]
+
+        }));
+    </script>
+
+
+    <script>
+        function updateTempreture(value) {
+            var newdata = [];
+            newdata.push(value);
+            chartSpeed.series[0].setData(newdata);
+        }
+
+        var socket = io.connect('http://localhost:8080');
+
+        socket.on("tempreture", function (value) {
+            console.log("new tempreture recieved !");
+            updateTempreture(value);
+
+
+
+        })
+    </script>
+
+</body>
+
 </html>
