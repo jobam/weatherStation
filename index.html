@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>WeatherStation</title>
+    </head>
+ 
+    <body>
+        <h1>WeatherStation</h1>
+
+<h2>Tempreture</h2>
+<div id="tempretureValue">20</div><span>°C</span>
+
+        <script src="/libraries/socket.io.js"></script>
+        <script src="/libraries/jquery-3.2.1.min.js"></script>
+        <script>
+            var socket = io.connect('http://localhost:8080');
+
+            socket.on("tempreture", function(value){
+                console.log("new tempreture recieved !");
+                $("#tempretureValue").text(value);
+            })
+        </script>
+    </body>
+</html>
