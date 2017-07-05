@@ -16,5 +16,9 @@ console.log("server is listening on port 8080");
 // Quand un client se connecte, on le note dans la console
 io.sockets.on('connection', function (socket) {
     console.log('Un client est connecté !');
-    socket.emit("tempreture", 50);
+    socket.emit("tempreture", 21);
+    socket.emit("humidity", 30);
+    //broadcast to all other except for the new one
+    socket.broadcast.emit("tempreture", 21);
+    socket.broadcast.emit("humidity", 30);
 });

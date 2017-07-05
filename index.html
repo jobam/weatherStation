@@ -18,8 +18,8 @@
 <body>
 
     <div style="width: 600px; height: 400px; margin: 0 auto">
-        <div id="container-speed" style="width: 300px; height: 200px; float: left"></div>
-        <div id="container-rpm" style="width: 300px; height: 200px; float: left"></div>
+        <div id="container-tempreture" style="width: 300px; height: 200px; float: left"></div>
+        <div id="container-humidity" style="width: 300px; height: 200px; float: left"></div>
     </div>
 
 
@@ -84,14 +84,18 @@
             }
         };
 
-        // The speed gauge
-        var chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
+        // The Tempreture gauge
+        var chartTempreture = Highcharts.chart('container-tempreture', Highcharts.merge(gaugeOptions, {
             yAxis: {
                 min: -10,
                 max: 50,
                 title: {
                     text: 'Tempreture'
-                }
+                },
+                startOnTick : true,
+                endOnTick : true,
+                min : -10,
+                max : 60
             },
 
             credits: {
@@ -112,6 +116,35 @@
             }]
 
         }));
+
+        // The Humidity gauge
+        var chartHumidity = Highcharts.chart('container-humidity', Highcharts.merge(gaugeOptions, {
+            yAxis: {
+                min: 0,
+                max: 100,
+                title: {
+                    text: 'Humidity'
+                }
+            },
+
+            credits: {
+                enabled: false
+            },
+
+            series: [{
+                name: 'Speed',
+                data: [40],
+                dataLabels: {
+                    format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                    ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                    '<span style="font-size:12px;color:silver">%</span></div>'
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                }
+            }]
+
+        }));
     </script>
 
 
@@ -119,7 +152,13 @@
         function updateTempreture(value) {
             var newdata = [];
             newdata.push(value);
-            chartSpeed.series[0].setData(newdata);
+            chartTempreture.series[0].setData(newdata);
+        }
+
+        function updateHumidity(value) {
+            var newdata = [];
+            newdata.push(value);
+            chartHumidity.series[0].setData(newdata);
         }
 
         var socket = io.connect('http://localhost:8080');
@@ -127,10 +166,12 @@
         socket.on("tempreture", function (value) {
             console.log("new tempreture recieved !");
             updateTempreture(value);
+        });
 
-
-
-        })
+        socket.on("humidity", function (value) {
+            console.log("new humidity recieved !");
+            updateHumidity(value);
+        });
     </script>
 
 </body>
