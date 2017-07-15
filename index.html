@@ -161,7 +161,7 @@
             chartHumidity.series[0].setData(newdata);
         }
 
-        var socket = io.connect('http://localhost:8080');
+        var socket = io.connect(window.location.href);
 
         socket.on("tempreture", function (value) {
             console.log("new tempreture recieved !");
