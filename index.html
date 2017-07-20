@@ -15,7 +15,7 @@
     <script src="/css/hightcharts.js"></script>
 </head>
 
-<body>
+<body style="background-color:black">
 
     <div style="width: 600px; height: 400px; margin: 0 auto">
         <div id="container-tempreture" style="width: 300px; height: 200px; float: left"></div>
@@ -103,8 +103,8 @@
             },
 
             series: [{
-                name: 'Speed',
-                data: [40],
+                name: 'Tempreture',
+                data: [-20],
                 dataLabels: {
                     format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
@@ -132,8 +132,8 @@
             },
 
             series: [{
-                name: 'Speed',
-                data: [40],
+                name: 'Humidity',
+                data: [0],
                 dataLabels: {
                     format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
