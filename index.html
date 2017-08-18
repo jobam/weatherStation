@@ -13,17 +13,55 @@
     <script src="/libraries/jquery-3.2.1.min.js"></script>
 
     <script src="/css/hightcharts.js"></script>
+
+<style>
+
+#clock {
+    height: 100px;
+    width: 800px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 20; right: 0;
+    padding-top: 250px;
+    font-family: courier, monospace;
+    text-align: center;
+    color: white;
+    font-size: 100px;
+}
+
+
+</style>
+
 </head>
 
 <body style="background-color:black">
 
-    <div style="width: 600px; height: 400px; margin: 0 auto">
+    <div style="width:600px;height: 400px; margin: 50px auto" id="gauges">
         <div id="container-tempreture" style="width: 300px; height: 200px; float: left"></div>
         <div id="container-humidity" style="width: 300px; height: 200px; float: left"></div>
     </div>
 
+    <div id="clock" style="color:white"></div>
 
+    <!-- ==========================Clock===================================== -->
 
+    <script type="text/javascript">
+        function displayTime() {
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+
+            // This gets a "handle" to the clock div in our HTML
+            var clockDiv = document.getElementById('clock');
+
+            // Then we set the text inside the clock div 
+            // to the hours, minutes, and seconds of the current time
+            clockDiv.innerText = hours + ":" + minutes;
+        }
+
+        setInterval(displayTime, 1000);
+
+    </script>
 
     <!--========================HightCharts===============================-->
     <script type="text/javascript">
@@ -92,10 +130,10 @@
                 title: {
                     text: 'Tempreture'
                 },
-                startOnTick : true,
-                endOnTick : true,
-                min : -10,
-                max : 60
+                startOnTick: true,
+                endOnTick: true,
+                min: -10,
+                max: 60
             },
 
             credits: {
